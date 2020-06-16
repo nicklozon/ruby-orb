@@ -63,12 +63,18 @@ jobs:
     steps:
       - ruby/install:
           version: "2.7"
+      - run:
+          name: "Test Install"
+          command: ruby --version
   install-on-node:
       docker:
         - image: cimg/node:current
       steps:
         - ruby/install:
             version: "2.7"
+        - run:
+            name: "Test Install"
+            command: ruby --version
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
   lint_pack-validate_publish-dev:
