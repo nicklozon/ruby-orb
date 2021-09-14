@@ -53,10 +53,16 @@ steps:
           echo "bundler $APP_BUNDLER_VERSION is already installed."
         fi
 
-        if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
-          bundle config set deployment 'true'
+        if [ "2.1" = "`echo -e "$APP_BUNDLER_VERSION\n2.1" | sort -V | head -n1`" ]; then
+          BUNDLE_CONFIG_SET_CMD="bundle config set"
+        else
+          BUNDLE_CONFIG_SET_CMD="bundle config"
         fi
-        bundle config set path << parameters.path >>
+
+        if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
+          $BUNDLE_CONFIG_SET_CMD deployment 'true'
+        fi
+        $BUNDLE_CONFIG_SET_CMD path << parameters.path >>
         bundle check || bundle install
   - when:
       condition: <<parameters.with-cache>>
